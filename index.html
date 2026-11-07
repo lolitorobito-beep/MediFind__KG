@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediFind KG — Найди лекарство</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="#" class="logo">
+            <span class="logo-icon">✚</span>
+            MediFind <span>KG</span>
+        </a>
+
+        <nav>
+            <a href="#search">Поиск</a>
+            <a href="#pharmacies">Аптеки</a>
+            <a href="#map-section">Карта</a>
+            <a href="#about">О проекте</a>
+        </nav>
+
+        <div class="header-city">📍 Бишкек</div>
+    </header>
+
+    <main>
+
+        <!-- ГЛАВНЫЙ ЭКРАН -->
+        <section class="hero" id="search">
+            <div class="hero-content">
+
+                <div class="label">
+                    ● ВАШ ПОМОЩНИК В ПОИСКЕ ЛЕКАРСТВ
+                </div>
+
+                <h1>
+                    Найди лекарство.<br>
+                    <span>Найди ближайшую аптеку.</span>
+                </h1>
+
+                <p>
+                    Сравнивай цены и находи нужные лекарства
+                    в аптеках Кыргызстана рядом с вами.
+                </p>
+
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input type="text" id="medicineInput" placeholder="Введите название лекарства...">
+                    <button onclick="searchMedicine()">
+                        Найти →
+                    </button>
+                </div>
+
+                <div class="hero-benefits">
+                    <span>♢ Сравнение цен</span>
+                    <span>⌖ Аптеки рядом</span>
+                    <span>✓ Удобный поиск</span>
+                </div>
+
+            </div>
+
+            <div class="hero-visual">
+                <div class="floating-price">
+                    ✦ <strong>45 сом</strong>
+                    <small>Пример цены</small>
+                </div>
+
+                <div class="medicine-box">
+                    <div class="medicine-cross">✚</div>
+                    <strong>MediFind</strong>
+                    <small>KG</small>
+                </div>
+
+                <div class="floating-pharmacy">
+                    <span>✚</span>
+                    <div>
+                        <strong>Аптека №1</strong>
+                        <small>Пример предложения</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- КАТЕГОРИИ -->
+        <section class="categories">
+            <div class="section-label">БЫСТРЫЙ ПОИСК</div>
+            <h2>Что вы ищете?</h2>
+
+            <div class="category-grid">
+                <div class="category-card" onclick="showCategory('Обезболивающие')"> <span>✦</span>
+                    <strong>Обезболивающие</strong>
+                </div>
+
+                <div class="category-card" onclick="showCategory('Витамины')"> <span>✚</span>
+                    <strong>Витамины</strong>
+                </div>
+
+                <div class="category-card" onclick="showCategory('Аллергия')"> <span>⌁</span>
+                    <strong>Простуда и грипп</strong>
+                </div>
+
+                <div class="category-card" onclick="showCategory('Пищеварение')"> <span>✧</span>
+                    <strong>Аллергия</strong>
+                </div>
+
+                <div class="category-card" onclick="showCategory('Простуда и грипп')"> <span>◉</span>
+                    <strong>Пищеварение</strong>
+                </div>
+            </div>
+        </section>
+
+        <!-- РЕЗУЛЬТАТЫ -->
+        <section class="results-section" id="pharmacies">
+            <div class="section-label">КАТАЛОГ ЛЕКАРСТВ</div>
+            <h2>Результаты поиска</h2>
+
+            <div class="sort-buttons">
+                <button onclick="sortByPrice()">Сначала дешёвые</button>
+                <button onclick="sortByPriceDescending()">Сначала дорогие</button>
+            </div>
+
+            <div id="results">
+                <p>Введите название лекарства, чтобы увидеть предложения аптек.</p>
+            </div>
+        </section>
+
+        <!-- КАРТА -->
+
+        <section class="map-section" id="map-section">
+
+            <div class="section-label">НАЙДИ РЯДОМ</div>
+
+            <div class="section-heading">
+                <div>
+                    <h2>Найди аптеку рядом</h2>
+                    <p>Сравни предложения и выбери удобную аптеку</p>
+                </div>
+
+                <button onclick="showAllPharmacies()">Все аптеки →</button>
+            </div>
+
+            <div class="pharmacy-layout">
+
+                <div class="pharmacy-sidebar">
+                    <h3>Аптеки Бишкека</h3>
+
+                    <div class="pharmacy-list">
+                        <div class="pharmacy-item" onclick="focusPharmacy('Аптека №1')">
+                            <span class="pharmacy-pin">✚</span>
+                            <div>
+                                <strong>Аптека №1</strong>
+                                <p>Проспект Чуй</p>
+                            </div>
+                        </div>
+
+                        <div class="pharmacy-item" onclick="focusPharmacy('Аптека №2')">
+                            <span class="pharmacy-pin">✚</span>
+                            <div>
+                                <strong>Аптека №2</strong>
+                                <p>Улица Киевская</p>
+                            </div>
+                        </div>
+
+                        <div class="pharmacy-item" onclick="focusPharmacy('Аптека №3')">
+                            <span class="pharmacy-pin">✚</span>
+                            <div>
+                                <strong>Аптека №3</strong>
+                                <p>Улица Манаса</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="location-button" onclick="findMyLocation()">
+                        📍 Моё местоположение
+                    </button>
+                </div>
+
+                <div class="pharmacy-map">
+                    <div id="map"></div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- О ПРОЕКТЕ -->
+        <section class="about" id="about">
+            <div class="section-label">О ПРОЕКТЕ</div>
+            <h2>Здоровье рядом. Всегда.</h2>
+
+            <p class="about-description">
+                MediFind KG — цифровая платформа, которая помогает
+                находить лекарства, сравнивать цены и выбирать аптеки
+                в Кыргызстане.
+            </p>
+
+            <div class="features">
+                <div class="feature">
+                    <span>01</span>
+                    <h3>Найти</h3>
+                    <p>Введи название нужного препарата.</p>
+                </div>
+
+                <div class="feature">
+                    <span>02</span>
+                    <h3>Сравнить</h3>
+                    <p>Посмотри предложения разных аптек.</p>
+                </div>
+
+                <div class="feature">
+                    <span>03</span>
+                    <h3>Добраться</h3>
+                    <p>Найди аптеку на карте.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="logo">
+            <span class="logo-icon">✚</span>
+            MediFind KG
+        </div>
+        <p>Найти лекарство. Найти аптеку.</p>
+        <small>© 2026 MediFind KG</small>
+        <small>Демонстрационный проект. Цены и наличие могут отличаться.</small>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
